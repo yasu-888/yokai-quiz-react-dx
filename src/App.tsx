@@ -43,16 +43,36 @@ function QuizApp(): JSX.Element {
         ? "正解！"
         : `残念！ 正解は${currentQuiz.answer}です。`
     );
-    if (choice === currentQuiz.answer) {
-      setCorrectCount(correctCount + 1);
-    }
 
-    if (currentQuizIndex >= 9) {
-      alert(`全${currentQuizIndex + 1}問終了！正解数は${correctCount}問です。`);
-      setCurrentQuizIndex(0);
-      setCorrectCount(0);
+    // 正解の場合
+    if (choice === currentQuiz.answer) {
+      setCorrectCount((prev: number) => {
+        const newCorrectCount = prev + 1;
+
+        if (currentQuizIndex >= 9) {
+          alert(
+            `全${
+              currentQuizIndex + 1
+            }問終了！正解数は${newCorrectCount}問です。`
+          );
+          setCurrentQuizIndex(0);
+          setCorrectCount(0);
+        } else {
+          setCurrentQuizIndex(currentQuizIndex + 1);
+        }
+        return newCorrectCount;
+      });
+      //　不正解の場合
     } else {
-      setCurrentQuizIndex(currentQuizIndex + 1);
+      if (currentQuizIndex >= 9) {
+        alert(
+          `全${currentQuizIndex + 1}問終了！正解数は${correctCount}問です。`
+        );
+        setCurrentQuizIndex(0);
+        setCorrectCount(0);
+      } else {
+        setCurrentQuizIndex(currentQuizIndex + 1);
+      }
     }
   };
 
